@@ -1,0 +1,349 @@
+﻿* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: "Outfit", sans-serif;
+  color: #1f1f1f;
+  background: linear-gradient(90deg, #f2f2f2 0 50%, #bc332e 50% 100%);
+  overflow: hidden;
+}
+
+.layout {
+  height: 100vh;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.left-panel,
+.right-panel {
+  width: 50%;
+  height: 100vh;
+  padding: clamp(16px, 2.2vw, 34px) clamp(22px, 3vw, 56px);
+  position: relative;
+}
+
+.left-panel {
+  background: transparent;
+}
+
+.right-panel {
+  background: transparent;
+  color: #f9ece3;
+}
+
+.left-top,
+.right-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left-top h1 {
+  margin: 0;
+  font-size: clamp(26px, 2.35vw, 47px);
+  letter-spacing: 1px;
+  color: #15312b;
+  font-weight: 700;
+}
+
+.search-box {
+  width: clamp(210px, 16vw, 365px);
+  height: clamp(38px, 2.6vw, 52px);
+  border-radius: 26px;
+  background: #e5e5e5;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 10px;
+}
+
+.icon {
+  font-size: clamp(16px, 1.2vw, 24px);
+  color: #333;
+}
+
+.search-box input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  width: 100%;
+  font-size: clamp(16px, 1.45vw, 28px);
+  font-family: inherit;
+}
+
+.right-top nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: clamp(18px, 3vw, 56px);
+}
+
+.right-top a {
+  color: #f8e9de;
+  text-decoration: none;
+  font-size: clamp(16px, 1.6vw, 31px);
+  font-weight: 300;
+}
+
+.classification-wrap {
+  margin-top: clamp(40px, 12vh, 170px);
+  display: flex;
+  gap: clamp(20px, 3.2vw, 55px);
+}
+
+.vertical-title {
+  margin: 0;
+  font-size: clamp(44px, 3.9vw, 76px);
+  color: #16332c;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: 1px;
+}
+
+.class-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: clamp(170px, 13vw, 245px);
+}
+
+.class-list li {
+  padding: 18px 0 16px;
+  border-bottom: 1px solid #ddd;
+  font-size: clamp(20px, 2vw, 38px);
+  line-height: 1.25;
+  position: relative;
+}
+
+.class-list li::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 30px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #bb3b31;
+}
+
+.class-list span {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.center-showcase {
+  position: absolute;
+  left: 50%;
+  top: 53%;
+  transform: translate(-50%, -50%);
+  width: clamp(320px, 33vw, 520px);
+  height: clamp(470px, 82vh, 790px);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dome {
+  /* border: 1px solid red; */
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* .dome-img {  
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+} */
+
+.insect-img {
+  /* border: 1px solid rgb(0, 0, 0); */
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  /* width: clamp(180px, 15.5vw, 250px);
+  height: clamp(260px, 49vh, 470px); */
+  height: 490px;
+  object-fit: cover;
+  /* border-radius: 130px; */
+}
+
+.base-img {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 3.5vh, 36px);
+  transform: translateX(-50%);
+  width: clamp(230px, 25vw, 400px);
+  height: clamp(68px, 12vh, 120px);
+  object-fit: cover;
+  border-radius: 80px;
+}
+
+.details {
+  margin-top: clamp(46px, 10.5vh, 120px);
+  margin-left: clamp(108px, 10vw, 190px);
+  width: clamp(280px, 26vw, 470px);
+}
+
+.details h2 {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(46px, 4.25vw, 82px);
+  line-height: 0.95;
+  color: #f7eadf;
+}
+
+.meta-grid {
+  margin-top: clamp(20px, 3.4vh, 44px);
+  display: flex;
+  gap: 24px;
+}
+
+.insect-icon {
+  width: clamp(62px, 5vw, 86px);
+  text-align: center;
+  border-right: 1px solid rgba(252, 226, 213, 0.5);
+  padding-right: 18px;
+}
+
+.insect-icon img {
+  width: clamp(32px, 2.7vw, 48px);
+  height: clamp(58px, 9vh, 90px);
+  object-fit: cover;
+}
+
+.insect-icon p {
+  margin: 8px 0 0;
+  font-size: clamp(18px, 1.85vw, 32px);
+}
+
+.meta-grid ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.meta-grid li {
+  margin-bottom: 16px;
+  font-size: clamp(18px, 1.8vw, 34px);
+  line-height: 1.2;
+  color: #f3ddd1;
+}
+
+.meta-grid li span {
+  color: #f8e6d9;
+  margin-right: 6px;
+}
+
+.price {
+  margin: clamp(10px, 2.4vh, 28px) 0 clamp(8px, 2vh, 18px);
+  font-size: clamp(36px, 3.4vw, 66px);
+  color: #f4c687;
+  font-weight: 600;
+}
+
+.switches {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.switches label {
+  font-size: clamp(18px, 1.7vw, 32px);
+  color: #f2ddd1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.switches input {
+  width: clamp(28px, 2.3vw, 40px);
+  height: clamp(16px, 1.4vw, 24px);
+  appearance: none;
+  border-radius: 14px;
+  background: #f2ede9;
+  position: relative;
+}
+
+.switches input::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: clamp(12px, 1.15vw, 20px);
+  height: clamp(12px, 1.15vw, 20px);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.details button {
+  margin-top: clamp(14px, 2.6vh, 28px);
+  width: clamp(190px, 14vw, 280px);
+  height: clamp(42px, 5.8vh, 62px);
+  border: 0;
+  border-radius: 12px;
+  background: #e4cda2;
+  color: #2e2a23;
+  font-size: clamp(20px, 1.8vw, 35px);
+  font-family: inherit;
+}
+
+@media (max-width: 1400px) {
+  body {
+    height: auto;
+    overflow: auto;
+    background: linear-gradient(180deg, #f2f2f2 0 50%, #bc332e 50% 100%);
+  }
+
+  .layout {
+    height: auto;
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .center-showcase {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin: 0 auto;
+    width: min(92vw, 520px);
+    height: 690px;
+  }
+
+  .details {
+    margin: 40px auto 20px;
+    width: min(90vw, 560px);
+  }
+
+  .classification-wrap {
+    margin-top: 80px;
+  }
+
+  .class-list li,
+  .right-top a,
+  .switches label,
+  .meta-grid li {
+    font-size: 24px;
+  }
+
+  .details h2 {
+    font-size: 62px;
+  }
+}
