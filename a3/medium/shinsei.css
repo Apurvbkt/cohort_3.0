@@ -1,0 +1,354 @@
+﻿:root {
+  --bg-deep: #262132;
+  --bg-deeper: #221d2b;
+  --text-main: #ffffff;
+  --text-soft: rgba(255, 255, 255, 0.88);
+  --accent: #f1d47b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Exo 2", sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-main);
+}
+
+.hero {
+  min-height: 740px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  background: #181426;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -22px;
+  background: url("./backgroung.png") center/cover no-repeat;
+  filter: blur(4px);
+  transform: scale(1.03);
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      180deg,
+      rgba(14, 12, 24, 0.16) 0%,
+      rgba(18, 13, 30, 0.3) 58%,
+      rgba(23, 16, 34, 0.74) 100%
+    ),
+    radial-gradient(circle at 50% 32%, rgba(255, 181, 117, 0.08), transparent 52%);
+  z-index: 1;
+}
+
+.top-nav {
+  width: min(1140px, 94%);
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+}
+
+.top-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: rgba(23, 26, 38, 0.28);
+  backdrop-filter: blur(4px);
+  z-index: -1;
+}
+
+.logo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  color: #fff;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.logo i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  display: inline-block;
+  position: relative;
+}
+
+.logo i::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.logo span {
+  font-weight: 400;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.menu a {
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.socials {
+  display: flex;
+  gap: 8px;
+}
+
+.socials a {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #47404f;
+  font-size: 10px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.hero-copy {
+  position: absolute;
+  z-index: 5;
+  top: 31%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: min(1000px, 92vw);
+  pointer-events: none;
+}
+
+.hero-copy p {
+  margin: 0;
+  position: absolute;
+  top: -18px;
+  left: 6%;
+  font-size: clamp(17px, 2vw, 31px);
+  font-weight: 500;
+  color: var(--text-soft);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+
+.hero-copy h1 {
+  margin: 2px 0 0;
+  font-family: "Audiowide", sans-serif;
+  font-size: clamp(58px, 7.25vw, 118px);
+  letter-spacing: 1px;
+  line-height: 0.9;
+  color: #ffffff;
+  text-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.hero-copy h2 {
+  margin: 0;
+  font-size: clamp(16px, 2vw, 33px);
+  font-weight: 500;
+  color: #faf7f5;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.32);
+  width: 100%;
+  text-align: right;
+  padding-right: 2%;
+}
+
+.monkey {
+  position: absolute;
+  left: 50%;
+  bottom: -150px;
+  transform: translateX(-50%);
+  width: min(1120px, 82vw);
+  z-index: 8;
+  filter: drop-shadow(0 14px 18px rgba(10, 10, 20, 0.34));
+}
+
+.mint-btn {
+  position: absolute;
+  left: 50%;
+  top: 71%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: clamp(200px, 22vw, 315px);
+  height: clamp(44px, 5.2vw, 56px);
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #171717;
+  font-size: clamp(13px, 1.2vw, 17px);
+  letter-spacing: 2px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+.mint-btn::before,
+.mint-btn::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  width: 8px;
+  height: calc(100% - 16px);
+  border: 2px solid rgba(22, 18, 22, 0.72);
+  border-left: none;
+  border-right: none;
+}
+
+.mint-btn::before {
+  left: 10px;
+}
+
+.mint-btn::after {
+  right: 10px;
+}
+
+.vision-section {
+  position: relative;
+  background: var(--bg-deeper);
+  margin-top: -56px;
+  padding: 100px 20px 40px;
+  z-index: 4;
+}
+
+.vision-section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -110px;
+  height: 170px;
+  background: var(--bg-deeper);
+  border-top-left-radius: 50% 100%;
+  border-top-right-radius: 50% 100%;
+}
+
+.vision-wrap {
+  width: min(1090px, 92%);
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.vision-wrap h3 {
+  margin: 0;
+  text-align: center;
+  font-family: "Audiowide", sans-serif;
+  letter-spacing: 1px;
+  font-size: clamp(36px, 2.7vw, 50px);
+  color: #f3f0f9;
+}
+
+.line-marker {
+  margin: 10px auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.line-marker span {
+  height: 1px;
+  width: clamp(210px, 34vw, 455px);
+  background: rgba(243, 216, 157, 0.68);
+}
+
+.line-marker i {
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  background: var(--bg-deeper);
+  border: 2px solid rgba(242, 208, 133, 0.9);
+  margin: 0 10px;
+}
+
+.vision-grid {
+  display: flex;
+  gap: 48px;
+}
+
+.vision-grid p {
+  flex: 1;
+  margin: 0;
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.5;
+  color: rgba(245, 240, 251, 0.86);
+}
+
+@media (max-width: 980px) {
+  .hero {
+    min-height: 680px;
+  }
+
+  .top-nav {
+    flex-direction: column;
+  }
+
+  .menu {
+    gap: 12px;
+  }
+
+  .hero-copy {
+    top: 31%;
+  }
+  
+  .hero-copy p {
+    left: 50%;
+    top: -22px;
+    transform: translateX(-50%);
+  }
+
+  .monkey {
+    width: min(760px, 112vw);
+    bottom: -112px;
+  }
+
+  .mint-btn {
+    top: 72%;
+  }
+
+  .vision-section {
+    margin-top: -34px;
+    padding-top: 84px;
+  }
+
+  .vision-section::before {
+    top: -68px;
+    height: 104px;
+  }
+
+  .vision-grid {
+    flex-direction: column;
+    gap: 18px;
+  }
+}
