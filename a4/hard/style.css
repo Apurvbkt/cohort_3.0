@@ -1,0 +1,358 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0px 50px 30px 50px;
+    position: relative;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 40px;
+    padding: 8px 0;
+    border-bottom: 1px solid #000;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.nav {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    gap: 40px;
+    justify-content: center;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.icons {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 20px;
+    align-items: center;
+}
+
+.icon {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.icon.profile {
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    color: white;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+}
+
+.main-content {
+    position: relative;
+    padding: 60px 0;
+    overflow: visible;
+}
+
+.decor {
+    position: absolute;
+    font-size: 40px;
+}
+
+.decor-1 {
+    top: 40px;
+    left: 60px;
+}
+
+.decor-2 {
+    top: 120px;
+    left: 280px;
+}
+
+.decor-3 {
+    top: 50px;
+    right: 80px;
+}
+
+.decor-4 {
+    bottom: 150px;
+    left: 420px;
+}
+
+.decor-5 {
+    bottom: 200px;
+    right: 120px;
+    font-size: 30px;
+}
+
+.decor-6 {
+    top: 280px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 60px;
+}
+
+.decor-7 {
+    bottom: 130px;
+    right: 350px;
+    font-size: 50px;
+}
+
+.circle-text {
+    position: absolute;
+    top: 200px;
+    right: 120px;
+    width: 160px;
+    height: 160px;
+    overflow: visible;
+}
+
+.circle-text svg {
+    width: 100%;
+    height: 100%;
+}
+
+.left-text {
+    position: absolute;
+    top: 100px;
+    left: 0;
+}
+
+.small-text {
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.left-text h2 {
+    font-size: 24px;
+    line-height: 1.3;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.main-heading {
+    text-align: center;
+    font-size: 72px;
+    line-height: 1.1;
+    margin-bottom: 50px;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 280px);
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: visible;
+}
+
+.img {
+    background-color: #e0e0e0;
+    border-radius: 30px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-1 {
+    background-color: #ffb347;
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 95%;
+    height: 50%;
+    margin: auto;
+}
+
+.img-2 {
+    background-color: #d4a574;
+    grid-column: 2;
+    grid-row: 1;
+    height: 250px;
+    align-self: end;
+}
+
+.img-3 {
+    background-color: #00cccc;
+    grid-column: 2;
+    grid-row: 2;
+    height: 250px;
+    align-self: start;
+}
+
+.img-4 {
+    background-color: #ffdd44;
+    grid-column: 3;
+    grid-row: 1 / 3;
+    height: 95%;
+    margin: auto;
+}
+
+.img-5 {
+    background-color: #ff7f50;
+    grid-column: 4;
+    grid-row: 1;
+    height: 250px;
+    align-self: end;
+}
+
+.img-6 {
+    background-color: #00aaff;
+    grid-column: 4;
+    grid-row: 2;
+    height: 250px;
+    align-self: start;
+}
+
+.img-7 {
+    background-color: #66cc99;
+    grid-column: 5;
+    grid-row: 1 / 3;
+    position: relative;
+    width: 95%;
+    height: 50%;
+    margin: auto;
+}
+
+.img-7::after {
+    content: '#2022';
+    position: absolute;
+    bottom: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+.quote-section {
+    position: absolute;
+    bottom: 100px;
+    left: 0;
+    max-width: 320px;
+}
+
+.quote-mark {
+    font-size: 60px;
+    margin-bottom: 10px;
+}
+
+.quote-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.signature {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 36px;
+    position: relative;
+}
+
+.signature .underline {
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 160px;
+    height: 8px;
+    background-color: #ffdd44;
+}
+
+.bottom-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: end;
+    margin-top: 80px;
+}
+
+.empty-col {
+    grid-column: 1;
+}
+
+.scroll-btn {
+    padding: 20px 35px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    justify-self: center;
+    grid-column: 2;
+}
+
+.right-col {
+    grid-column: 3;
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.blog-section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: center;
+    justify-content: end;
+}
+
+.blog-section .number {
+    font-size: 60px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.blog-text .date {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.blog-text .blog-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.arrow-btn {
+    width: 60px;
+    height: 60px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
