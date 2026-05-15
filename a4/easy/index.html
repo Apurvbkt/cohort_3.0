@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bento Layout V2</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bento-container">
+        
+        <!-- Column 1 -->
+        <div class="bento-col col-1">
+            <div class="b-box char-purple-box">
+                <img src="purple char.png" alt="Character" class="box-img">
+            </div>
+            <div class="b-box butusic-box">
+                <h1 class="butusic-title">BUTUSIC</h1>
+                <p class="butusic-subtitle">ILLUSTRATIONS<br>EXHIBITION</p>
+                <div class="divider"></div>
+                <div class="bitcoin-row">
+                    <div class="btc-icon"><i class="fa-brands fa-bitcoin"></i></div>
+                    <span class="btc-text">We accept more<br>than just bitcoins</span>
+                </div>
+                <!-- Fake Barcode -->
+                <div class="barcode-container">
+                    <div class="barcode"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="bento-col col-2">
+            <div class="b-box circle-cases-box">
+                <div class="flower-icon"><i class="fa-solid fa-fan"></i></div>
+                <svg class="circular-text" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="33" stroke="#d4ff00" stroke-width="0.5" fill="none" />
+                    <!-- Radius 38 -> Circumference = 2 * pi * 38 = 238.7 -->
+                    <path id="circlePath" d="M 50, 50 m -38, 0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" fill="none"/>
+                    <text font-size="9" fill="#ffffff" font-family="'Inter', sans-serif" font-weight="600" letter-spacing="1px">
+                        <textPath href="#circlePath" startOffset="0%" textLength="238" lengthAdjust="spacingAndGlyphs">
+                            MORE CASES <tspan fill="#9d5bfe">●</tspan> MORE CASES <tspan fill="#9d5bfe">●</tspan> MORE CASES <tspan fill="#9d5bfe">●</tspan> MORE CAES <tspan fill="#9d5bfe">●</tspan>
+                        </textPath>
+                    </text>
+                </svg>
+            </div>
+            <div class="b-box address-box">
+                <div class="address-top">
+                    <div class="loc-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <span class="loc-street">1217 PURRWEB<br>STREET, LA</span>
+                </div>
+                <h4 class="loc-title">FIRST EXHIBITION OF<br>ILLUSTRATIONS OFFLINE</h4>
+                <span class="loc-link">BUTUSIC.COM/EXHIBITION</span>
+            </div>
+            <div class="b-box ribbons-box">
+                <i class="fa-solid fa-award"></i>
+                <i class="fa-solid fa-award"></i>
+                <i class="fa-solid fa-award"></i>
+                <i class="fa-solid fa-award"></i>
+            </div>
+            <div class="b-box appstore-box">
+                <div class="qr-code"><i class="fa-solid fa-qrcode"></i></div>
+                <div class="app-details">
+                    <h5>APPSTORE</h5>
+                    <p>Download the app and get<br>10% off your first purchase</p>
+                </div>
+                <button class="arrow-up-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            </div>
+        </div>
+
+        <!-- Columns 3 & 4 Wrapper -->
+        <div class="bento-col col-3-4-wrapper">
+            <!-- Top Section: Menu and Col 4 items -->
+            <div class="top-section">
+                <!-- Left: Menu (Col 3) -->
+                <div class="b-box menu-box">
+                    <div class="menu-item"><i class="fa-solid fa-border-all"></i> CATEGORIES</div>
+                    <div class="menu-item"><i class="fa-regular fa-credit-card"></i> PAYMENT</div>
+                    <div class="menu-item"><i class="fa-regular fa-user"></i> AUTHORS</div>
+                    <div class="menu-item active">
+                        <span><i class="fa-solid fa-gavel"></i> AUCTION</span>
+                        <div class="purple-dot"></div>
+                    </div>
+                    <div class="menu-item"><i class="fa-solid fa-chart-line"></i> SALES</div>
+                    <div class="menu-item"><i class="fa-regular fa-star"></i> REVIEWS</div>
+                    <div class="menu-item contacts"><i class="fa-regular fa-envelope"></i> CONTACTS</div>
+                </div>
+                
+                <!-- Right: Col 4 Nested -->
+                <div class="col-4-nested">
+                    <div class="b-box purple-info-box">
+                        <div class="info-item">
+                            <i class="fa-regular fa-face-smile"></i>
+                            <span>Only exclusive<br>illustrations</span>
+                        </div>
+                        <div class="divider-vert"></div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-cube"></i>
+                            <span>We do not sell<br>works on stock</span>
+                        </div>
+                    </div>
+                    <div class="b-box char-green-box">
+                        <img src="green char.png" alt="Character" class="box-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Best Authors -->
+            <div class="b-box best-authors-box">
+                <div class="ba-left">
+                    <h2>ONLY THE BEST<br>AUTHORS</h2>
+                    <span class="ba-desc">184 guys with a unique vision</span>
+                </div>
+                <div class="ba-right">
+                    <div class="rating-score">4.97</div>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star-half-stroke"></i>
+                    </div>
+                    <button class="best-reviews-btn">BEST REVIEWS <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
