@@ -1,925 +1,150 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DOM Explorer - Task Manager</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --bg-primary: #f5f7fa;
-            --bg-secondary: #ffffff;
-            --text-primary: #2c3e50;
-            --text-secondary: #7f8c8d;
-            --border-color: #e1e8ed;
-            --accent-color: #3498db;
-            --success-color: #27ae60;
-            --danger-color: #e74c3c;
-            --warning-color: #f39c12;
-        }
-
-        [data-theme="dark"] {
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #16213e;
-            --text-primary: #eaeaea;
-            --text-secondary: #a0a0a0;
-            --border-color: #2d3a5a;
-            --accent-color: #4a9fff;
-            --success-color: #2ecc71;
-            --danger-color: #e74c3c;
-            --warning-color: #f1c40f;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            transition: all 0.3s ease;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        h1 {
-            font-size: 28px;
-        }
-
-        .theme-toggle {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            background: var(--accent-color);
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            transform: translateY(-2px);
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Task Manager Section */
-        .task-manager {
-            background: var(--bg-secondary);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .task-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 12px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 16px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .add-task-btn {
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: var(--accent-color);
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .add-task-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-        }
-
-        /* Task Controls */
-        .task-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .search-input {
-            flex: 1;
-            min-width: 200px;
-            padding: 10px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 14px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        .filter-select,
-        .clear-all-btn {
-            padding: 10px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 14px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            cursor: pointer;
-        }
-
-        .clear-all-btn {
-            background: var(--danger-color);
-            color: white;
-            border-color: var(--danger-color);
-        }
-
-        .task-counters {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .counter {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .pending-counter {
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--accent-color);
-        }
-
-        .completed-counter {
-            background: rgba(39, 174, 96, 0.1);
-            color: var(--success-color);
-        }
-
-        /* Task Cards */
-        .tasks-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .task-card {
-            padding: 20px;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            background: var(--bg-primary);
-            transition: all 0.3s ease;
-        }
-
-        .task-card.completed {
-            opacity: 0.7;
-            text-decoration: line-through;
-        }
-
-        .task-card:hover {
-            border-color: var(--accent-color);
-            transform: translateX(5px);
-        }
-
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .task-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .task-category {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .category-work {
-            background: rgba(231, 76, 60, 0.1);
-            color: var(--danger-color);
-        }
-
-        .category-personal {
-            background: rgba(46, 204, 113, 0.1);
-            color: var(--success-color);
-        }
-
-        .category-study {
-            background: rgba(241, 196, 15, 0.1);
-            color: var(--warning-color);
-        }
-
-        .category-other {
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--accent-color);
-        }
-
-        .task-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .task-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .edit-btn {
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--accent-color);
-        }
-
-        .complete-btn {
-            background: rgba(39, 174, 96, 0.1);
-            color: var(--success-color);
-        }
-
-        .delete-btn {
-            background: rgba(231, 76, 60, 0.1);
-            color: var(--danger-color);
-        }
-
-        .task-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Rendering Pipeline Section */
-        .pipeline-section {
-            background: var(--bg-secondary);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .pipeline-section h2 {
-            margin-bottom: 20px;
-        }
-
-        .pipeline-flow {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .flow-box {
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px dashed var(--accent-color);
-            text-align: center;
-        }
-
-        .flow-arrow {
-            text-align: center;
-            font-size: 24px;
-            color: var(--accent-color);
-        }
-
-        /* Event Propagation Demo */
-        .propagation-demo {
-            margin-top: 30px;
-            padding: 25px;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .propagation-container {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .propagation-box {
-            padding: 30px;
-            border: 3px solid;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .grandparent {
-            border-color: #e74c3c;
-            background: rgba(231, 76, 60, 0.1);
-        }
-
-        .parent {
-            border-color: #f39c12;
-            background: rgba(243, 156, 18, 0.1);
-            margin-top: 20px;
-        }
-
-        .child-btn {
-            border-color: #27ae60;
-            background: rgba(39, 174, 96, 0.1);
-            margin-top: 20px;
-            padding: 15px 30px;
-        }
-
-        .propagation-logs {
-            margin-top: 20px;
-            padding: 15px;
-            background: var(--bg-primary);
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .log-entry {
-            padding: 5px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .clear-logs-btn {
-            margin-top: 10px;
-            padding: 8px 16px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+    <style></style>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>🧠 DOM Explorer - Task Manager</h1>
-            <button class="theme-toggle" id="themeToggle">Toggle Dark Mode</button>
-        </header>
+      <header>
+        <h1>🧠 DOM Explorer - Task Manager</h1>
+        <button class="theme-toggle" id="themeToggle">Toggle Dark Mode</button>
+      </header>
 
-        <div class="main-content">
-            <!-- Task Manager Section -->
-            <div class="task-manager">
-                <h2>📝 Task Manager</h2>
-                
-                <!-- Task Creation Form -->
-                <form class="task-form" id="taskForm">
-                    <div class="form-group">
-                        <label for="taskTitle">Task Title</label>
-                        <input type="text" id="taskTitle" placeholder="Enter your task..." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskCategory">Category</label>
-                        <select id="taskCategory">
-                            <option value="work">Work</option>
-                            <option value="personal">Personal</option>
-                            <option value="study">Study</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="add-task-btn">Add Task</button>
-                </form>
+      <div class="main-content">
+        <div class="task-manager">
+          <h2>📝 Task Manager</h2>
 
-                <!-- Task Controls -->
-                <div class="task-controls">
-                    <input type="text" class="search-input" id="searchInput" placeholder="Search tasks...">
-                    <select class="filter-select" id="categoryFilter">
-                        <option value="all">All Categories</option>
-                        <option value="work">Work</option>
-                        <option value="personal">Personal</option>
-                        <option value="study">Study</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <button class="clear-all-btn" id="clearAllBtn">Clear All</button>
-                </div>
-
-                <!-- Task Counters -->
-                <div class="task-counters">
-                    <div class="counter pending-counter">
-                        Pending: <span id="pendingCount">0</span>
-                    </div>
-                    <div class="counter completed-counter">
-                        Completed: <span id="completedCount">0</span>
-                    </div>
-                </div>
-
-                <!-- Tasks Container -->
-                <div class="tasks-container" id="tasksContainer">
-                    <!-- Tasks will be dynamically added here -->
-                </div>
+          <!-- Task Creation Form -->
+          <form class="task-form" id="taskForm">
+            <div class="form-group">
+              <label for="taskTitle">Task Title</label>
+              <input
+                type="text"
+                id="taskTitle"
+                placeholder="Enter your task..."
+                required
+              />
             </div>
-
-            <!-- Rendering Pipeline Section -->
-            <div class="pipeline-section">
-                <h2>🌐 Browser Rendering Pipeline</h2>
-                
-                <div class="pipeline-flow">
-                    <div class="flow-box">
-                        <h3>HTML</h3>
-                        <p>Markup content for structure</p>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-box">
-                        <h3>Parsing</h3>
-                        <p>Browser reads and processes HTML</p>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-box">
-                        <h3>Tokenization</h3>
-                        <p>HTML converted into tokens</p>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-box">
-                        <h3>DOM Tree</h3>
-                        <p>Hierarchical tree of elements</p>
-                    </div>
-                    <div class="flow-arrow">+</div>
-                    <div class="flow-box">
-                        <h3>CSS</h3>
-                        <p>Styles for presentation</p>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-box">
-                        <h3>CSSOM Tree</h3>
-                        <p>Hierarchical tree of styles</p>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-box">
-                        <h3>Render Tree</h3>
-                        <p>Combined DOM + CSSOM for rendering</p>
-                    </div>
-                </div>
+            <div class="form-group">
+              <label for="taskCategory">Category</label>
+              <select id="taskCategory">
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="study">Study</option>
+                <option value="other">Other</option>
+              </select>
             </div>
+            <button type="submit" class="add-task-btn">Add Task</button>
+          </form>
+
+          <div class="task-controls">
+            <input
+              type="text"
+              class="search-input"
+              id="searchInput"
+              placeholder="Search tasks..."
+            />
+            <select class="filter-select" id="categoryFilter">
+              <option value="all">All Categories</option>
+              <option value="work">Work</option>
+              <option value="personal">Personal</option>
+              <option value="study">Study</option>
+              <option value="other">Other</option>
+            </select>
+            <button class="clear-all-btn" id="clearAllBtn">Clear All</button>
+          </div>
+
+          <div class="task-counters">
+            <div class="counter pending-counter">
+              Pending: <span id="pendingCount">0</span>
+            </div>
+            <div class="counter completed-counter">
+              Completed: <span id="completedCount">0</span>
+            </div>
+          </div>
+          <div class="tasks-container" id="tasksContainer"></div>
         </div>
 
-        <!-- Event Propagation Demo -->
-        <div class="propagation-demo">
-            <h2>🔄 Event Propagation Demonstration</h2>
-            <p>Click buttons to see bubbling and capturing in console and logs below:</p>
-            
-            <div class="propagation-container">
-                <div class="propagation-box grandparent" id="grandparentBubble">
-                    Grandparent (Bubbling)
-                    <div class="propagation-box parent" id="parentBubble">
-                        Parent (Bubbling)
-                        <button class="propagation-box child-btn" id="childBubble">Child (Bubbling)</button>
-                    </div>
-                </div>
+        <div class="pipeline-section">
+          <h2>🌐 Browser Rendering Pipeline</h2>
 
-                <div class="propagation-box grandparent" id="grandparentCapture">
-                    Grandparent (Capturing)
-                    <div class="propagation-box parent" id="parentCapture">
-                        Parent (Capturing)
-                        <button class="propagation-box child-btn" id="childCapture">Child (Capturing)</button>
-                    </div>
-                </div>
+          <div class="pipeline-flow">
+            <div class="flow-box">
+              <h3>HTML</h3>
+              <p>Markup content for structure</p>
             </div>
-
-            <div class="propagation-logs" id="propagationLogs">
-                <div class="log-entry">Logs will appear here...</div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box">
+              <h3>Parsing</h3>
+              <p>Browser reads and processes HTML</p>
             </div>
-            <button class="clear-logs-btn" id="clearLogsBtn">Clear Logs</button>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box">
+              <h3>Tokenization</h3>
+              <p>HTML converted into tokens</p>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box">
+              <h3>DOM Tree</h3>
+              <p>Hierarchical tree of elements</p>
+            </div>
+            <div class="flow-arrow">+</div>
+            <div class="flow-box">
+              <h3>CSS</h3>
+              <p>Styles for presentation</p>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box">
+              <h3>CSSOM Tree</h3>
+              <p>Hierarchical tree of styles</p>
+            </div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box">
+              <h3>Render Tree</h3>
+              <p>Combined DOM + CSSOM for rendering</p>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="propagation-demo">
+        <h2>🔄 Event Propagation Demonstration</h2>
+        <p>
+          Click buttons to see bubbling and capturing in console and logs below:
+        </p>
+
+        <div class="propagation-container">
+          <div class="propagation-box grandparent" id="grandparentBubble">
+            Grandparent (Bubbling)
+            <div class="propagation-box parent" id="parentBubble">
+              Parent (Bubbling)
+              <button class="propagation-box child-btn" id="childBubble">
+                Child (Bubbling)
+              </button>
+            </div>
+          </div>
+
+          <div class="propagation-box grandparent" id="grandparentCapture">
+            Grandparent (Capturing)
+            <div class="propagation-box parent" id="parentCapture">
+              Parent (Capturing)
+              <button class="propagation-box child-btn" id="childCapture">
+                Child (Capturing)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="propagation-logs" id="propagationLogs">
+          <div class="log-entry">Logs will appear here...</div>
+        </div>
+        <button class="clear-logs-btn" id="clearLogsBtn">Clear Logs</button>
+      </div>
     </div>
-
-    <script>
-        // ==========================================
-        // ATTRIBUTES VS PROPERTIES EXPLANATION
-        // ==========================================
-        /*
-        Attributes vs Properties:
-        
-        1. ATTRIBUTES:
-           - Defined in HTML (e.g., <div data-id="123" class="box">)
-           - Can be accessed via getAttribute(), setAttribute(), removeAttribute()
-           - Always strings
-           - Live in the DOM tree
-           - Not always in sync with properties
-        
-        2. PROPERTIES:
-           - JavaScript object properties (e.g., element.className, element.value)
-           - Can be various types (string, number, boolean, object)
-           - Live in the JavaScript runtime
-           - Usually reflect current state
-        
-        Examples in this code:
-        - We use data attributes (data-id, data-status, data-category) on task cards
-        - We use dataset property to access them
-        - We use setAttribute() and getAttribute() to manipulate them
-        */
-
-        // Global state
-        let tasks = [];
-        let taskIdCounter = 0;
-        const logsContainer = document.getElementById('propagationLogs');
-
-        // ==========================================
-        // THEME TOGGLE (Feature 4)
-        // ==========================================
-        const themeToggleBtn = document.getElementById('themeToggle');
-        
-        // Check for saved theme in localStorage
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeButtonText(savedTheme);
-
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            // Using setAttribute() to set custom data attribute
-            document.documentElement.setAttribute('data-theme', newTheme);
-            
-            // Using classList to toggle (example of classList usage)
-            document.body.classList.toggle('dark-mode');
-            
-            // Save to localStorage
-            localStorage.setItem('theme', newTheme);
-            
-            updateThemeButtonText(newTheme);
-        });
-
-        function updateThemeButtonText(theme) {
-            themeToggleBtn.textContent = theme === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode';
-        }
-
-        // ==========================================
-        // TASK CREATION MODULE (Feature 1)
-        // ==========================================
-        const taskForm = document.getElementById('taskForm');
-        const taskTitleInput = document.getElementById('taskTitle');
-        const taskCategorySelect = document.getElementById('taskCategory');
-        const tasksContainer = document.getElementById('tasksContainer');
-        const searchInput = document.getElementById('searchInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const clearAllBtn = document.getElementById('clearAllBtn');
-        const pendingCountSpan = document.getElementById('pendingCount');
-        const completedCountSpan = document.getElementById('completedCount');
-
-        // Load tasks from localStorage on page load
-        loadTasksFromLocalStorage();
-
-        taskForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const title = taskTitleInput.value.trim();
-            const category = taskCategorySelect.value;
-            
-            if (title) {
-                // Using DocumentFragment for efficient DOM updates (Bonus Feature)
-                const fragment = document.createDocumentFragment();
-                const taskCard = createTaskCard(title, category);
-                fragment.appendChild(taskCard);
-                
-                // Using append() method
-                tasksContainer.append(fragment);
-                
-                // Clear form
-                taskTitleInput.value = '';
-                
-                // Update counters
-                updateCounters();
-                
-                // Save to localStorage
-                saveTasksToLocalStorage();
-            }
-        });
-
-        // ==========================================
-        // CREATE TASK CARD (Features 1, 2, 3)
-        // ==========================================
-        function createTaskCard(title, category, status = 'pending', id = null) {
-            const taskId = id || ++taskIdCounter;
-            
-            // Using createElement()
-            const taskCard = document.createElement('div');
-            taskCard.className = 'task-card';
-            
-            // Setting custom data attributes (Feature 2)
-            taskCard.setAttribute('data-id', taskId);
-            taskCard.setAttribute('data-status', status);
-            taskCard.setAttribute('data-category', category);
-            
-            // Can also use dataset property
-            taskCard.dataset.id = taskId;
-            taskCard.dataset.status = status;
-            taskCard.dataset.category = category;
-            
-            if (status === 'completed') {
-                taskCard.classList.add('completed');
-            }
-            
-            // Task Header
-            const taskHeader = document.createElement('div');
-            taskHeader.className = 'task-header';
-            
-            const taskTitle = document.createElement('h3');
-            taskTitle.className = 'task-title';
-            // Using createTextNode()
-            taskTitle.appendChild(document.createTextNode(title));
-            
-            const taskCategory = document.createElement('span');
-            taskCategory.className = `task-category category-${category}`;
-            taskCategory.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-            
-            taskHeader.appendChild(taskTitle);
-            taskHeader.appendChild(taskCategory);
-            
-            // Task Actions
-            const taskActions = document.createElement('div');
-            taskActions.className = 'task-actions';
-            
-            const editBtn = document.createElement('button');
-            editBtn.className = 'task-btn edit-btn';
-            editBtn.textContent = 'Edit';
-            editBtn.dataset.action = 'edit';
-            
-            const completeBtn = document.createElement('button');
-            completeBtn.className = 'task-btn complete-btn';
-            completeBtn.textContent = status === 'completed' ? 'Undo' : 'Complete';
-            completeBtn.dataset.action = 'complete';
-            
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'task-btn delete-btn';
-            deleteBtn.textContent = 'Delete';
-            deleteBtn.dataset.action = 'delete';
-            
-            taskActions.appendChild(editBtn);
-            taskActions.appendChild(completeBtn);
-            taskActions.appendChild(deleteBtn);
-            
-            // Using append()
-            taskCard.appendChild(taskHeader);
-            taskCard.appendChild(taskActions);
-            
-            // Save to tasks array
-            tasks.push({
-                id: taskId,
-                title: title,
-                category: category,
-                status: status
-            });
-            
-            return taskCard;
-        }
-
-        // ==========================================
-        // EVENT DELEGATION (Feature 6)
-        // ==========================================
-        // Single event listener on parent container instead of individual buttons
-        tasksContainer.addEventListener('click', (e) => {
-            const target = e.target;
-            
-            // Check if clicked element is a task button
-            if (target.classList.contains('task-btn')) {
-                const taskCard = target.closest('.task-card');
-                const taskId = parseInt(taskCard.dataset.id);
-                const action = target.dataset.action;
-                
-                if (action === 'delete') {
-                    // Using remove() method (Feature 3)
-                    taskCard.remove();
-                    removeTaskFromArray(taskId);
-                    updateCounters();
-                    saveTasksToLocalStorage();
-                } else if (action === 'complete') {
-                    toggleTaskComplete(taskCard, taskId);
-                } else if (action === 'edit') {
-                    editTask(taskCard, taskId);
-                }
-            }
-        });
-
-        function toggleTaskComplete(taskCard, taskId) {
-            const currentStatus = taskCard.getAttribute('data-status');
-            const newStatus = currentStatus === 'pending' ? 'completed' : 'pending';
-            
-            // Using setAttribute()
-            taskCard.setAttribute('data-status', newStatus);
-            
-            // Using classList
-            taskCard.classList.toggle('completed');
-            
-            // Update button text
-            const completeBtn = taskCard.querySelector('.complete-btn');
-            completeBtn.textContent = newStatus === 'completed' ? 'Undo' : 'Complete';
-            
-            // Update task in array
-            updateTaskInArray(taskId, { status: newStatus });
-            
-            updateCounters();
-            saveTasksToLocalStorage();
-        }
-
-        function editTask(taskCard, taskId) {
-            const taskTitle = taskCard.querySelector('.task-title');
-            const currentTitle = taskTitle.textContent;
-            
-            const newTitle = prompt('Edit task:', currentTitle);
-            if (newTitle && newTitle.trim()) {
-                taskTitle.textContent = newTitle.trim();
-                updateTaskInArray(taskId, { title: newTitle.trim() });
-                saveTasksToLocalStorage();
-            }
-        }
-
-        function removeTaskFromArray(id) {
-            tasks = tasks.filter(task => task.id !== id);
-        }
-
-        function updateTaskInArray(id, updates) {
-            const task = tasks.find(task => task.id === id);
-            if (task) {
-                Object.assign(task, updates);
-            }
-        }
-
-        // ==========================================
-        // CLEAR ALL TASKS (Bonus Feature)
-        // ==========================================
-        clearAllBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to clear all tasks?')) {
-                // Remove all child elements
-                while (tasksContainer.firstChild) {
-                    tasksContainer.removeChild(tasksContainer.firstChild);
-                }
-                tasks = [];
-                updateCounters();
-                saveTasksToLocalStorage();
-            }
-        });
-
-        // ==========================================
-        // SEARCH & FILTER (Bonus Features)
-        // ==========================================
-        searchInput.addEventListener('input', filterTasks);
-        categoryFilter.addEventListener('change', filterTasks);
-
-        function filterTasks() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const categoryValue = categoryFilter.value;
-            
-            const allTaskCards = tasksContainer.querySelectorAll('.task-card');
-            
-            allTaskCards.forEach(taskCard => {
-                const title = taskCard.querySelector('.task-title').textContent.toLowerCase();
-                const category = taskCard.dataset.category;
-                
-                const matchesSearch = title.includes(searchTerm);
-                const matchesCategory = categoryValue === 'all' || category === categoryValue;
-                
-                taskCard.style.display = matchesSearch && matchesCategory ? 'block' : 'none';
-            });
-        }
-
-        // ==========================================
-        // TASK COUNTERS (Bonus Feature)
-        // ==========================================
-        function updateCounters() {
-            const pendingTasks = tasks.filter(task => task.status === 'pending');
-            const completedTasks = tasks.filter(task => task.status === 'completed');
-            
-            pendingCountSpan.textContent = pendingTasks.length;
-            completedCountSpan.textContent = completedTasks.length;
-        }
-
-        // ==========================================
-        // LOCAL STORAGE (Bonus Feature)
-        // ==========================================
-        function saveTasksToLocalStorage() {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            localStorage.setItem('taskIdCounter', taskIdCounter);
-        }
-
-        function loadTasksFromLocalStorage() {
-            const savedTasks = localStorage.getItem('tasks');
-            const savedCounter = localStorage.getItem('taskIdCounter');
-            
-            if (savedTasks) {
-                tasks = JSON.parse(savedTasks);
-                taskIdCounter = savedCounter ? parseInt(savedCounter) : 0;
-                
-                const fragment = document.createDocumentFragment();
-                tasks.forEach(task => {
-                    const taskCard = createTaskCard(task.title, task.category, task.status, task.id);
-                    fragment.appendChild(taskCard);
-                });
-                tasksContainer.appendChild(fragment);
-                updateCounters();
-            }
-        }
-
-        // ==========================================
-        // EVENT PROPAGATION DEMONSTRATION (Feature 7)
-        // ==========================================
-        
-        // BUBBLING DEMO
-        const grandparentBubble = document.getElementById('grandparentBubble');
-        const parentBubble = document.getElementById('parentBubble');
-        const childBubble = document.getElementById('childBubble');
-
-        // Bubbling: Event propagates from child to grandparent
-        grandparentBubble.addEventListener('click', () => logEvent('Grandparent (Bubbling)'), false);
-        parentBubble.addEventListener('click', () => logEvent('Parent (Bubbling)'), false);
-        childBubble.addEventListener('click', () => logEvent('Child (Bubbling)'), false);
-
-        // CAPTURING DEMO
-        const grandparentCapture = document.getElementById('grandparentCapture');
-        const parentCapture = document.getElementById('parentCapture');
-        const childCapture = document.getElementById('childCapture');
-
-        // Capturing: Event propagates from grandparent to child
-        grandparentCapture.addEventListener('click', () => logEvent('Grandparent (Capturing)'), true);
-        parentCapture.addEventListener('click', () => logEvent('Parent (Capturing)'), true);
-        childCapture.addEventListener('click', () => logEvent('Child (Capturing)'), true);
-
-        function logEvent(message) {
-            const logEntry = document.createElement('div');
-            logEntry.className = 'log-entry';
-            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-            
-            // Using prepend() method (Feature 3)
-            logsContainer.prepend(logEntry);
-            
-            // Also log to console
-            console.log(message);
-        }
-
-        // Clear logs button
-        document.getElementById('clearLogsBtn').addEventListener('click', () => {
-            logsContainer.innerHTML = '<div class="log-entry">Logs will appear here...</div>';
-        });
-
-        // ==========================================
-        // DEMO OF ALL DOM MANIPULATION METHODS (Feature 3)
-        // ==========================================
-        // Demonstrating append(), prepend(), before(), after(), replaceWith()
-        console.log('DOM Manipulation methods demonstrated in this code:');
-        console.log('1. append() - Used to add task cards to container');
-        console.log('2. prepend() - Used to add new log entries at top');
-        console.log('3. remove() - Used to delete task cards');
-        console.log('4. createElement() - Used to create all DOM elements');
-        console.log('5. createTextNode() - Used to create text content');
-        console.log('6. appendChild() - Used with DocumentFragment');
-    </script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
