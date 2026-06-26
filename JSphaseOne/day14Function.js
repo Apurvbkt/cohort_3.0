@@ -1,28 +1,47 @@
 // 1. Funtion Declaration 
 function funName(){
-    // console.log("I am function declaration");
+    console.log("I am function declaration");
     
 }
-funName()
+// funName()
 
 
 // 2. function Expression
 let funName2 = function(){
-    // console.log('i am function Expression')
+    console.log('i am function Expression')
 }
-funName2()
+// funName2()
 
 
 // 3. Arrow function
 let funName3 = ()=>{
-    // console.log("I am arrow funtion");
+    console.log("I am arrow funtion");
     
 }
-funName3()
+// funName3()
 
 
 // 4. Anonymous Funtion
-setTimeout(function(){
+// setTimeout(function(){
     // console.log("I am annonymous Funtion");
     
-}, 1000)
+// }, 1000)
+
+
+
+// 5.IIFE
+// (function(){
+//     console.log('i am IIFE')
+// })() 
+
+function greet(name = 'Sir'){
+    if(name == undefined){
+        console.log('Write the name')
+    }else{
+        
+        console.log("hello", name);
+    }
+    
+}
+greet('apurv')
+greet()

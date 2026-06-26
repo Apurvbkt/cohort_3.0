@@ -1,0 +1,31 @@
+*{
+    background-color: black;
+    color: white
+}
+.box{
+    background-color: rgba(41, 21, 3, 0.679);
+    border: 1px solid white;
+    width: 60%;
+    height:260px;
+    margin: auto;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.box2{
+    border: 1px solid rgb(255, 255, 255);
+    width: 94%;
+    height: 220px;
+    margin: auto;
+    margin-top: 15px;
+}
+video{
+    width: 100%;
+    height: 100%;
+}
+p{
+    background-color: transparent;
+    font-size: 14px;
+    height: 5px;
+    line-height: 1%;
+}
