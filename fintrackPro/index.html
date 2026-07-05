@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack Pro - Personal Finance Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --income: #22c55e;
+            --expense: #ef4444;
+            --bg: #1e293b;
+            --sidebar-bg: #334155;
+            --card-bg: #273449;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* App Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: white;
+        }
+
+        .add-transaction-sidebar {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        .top-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .username-tag {
+            font-size: 0.875rem;
+            background-color: rgba(59, 130, 246, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            color: white;
+        }
+
+        .logout-btn {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            border-color: var(--expense);
+            color: var(--expense);
+        }
+
+        /* Main Content */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            padding: 1.5rem 2rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px var(--shadow);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-card h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #1e293b;
+            color: var(--text);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--expense);
+            border: 1px solid var(--expense);
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .dashboard-header p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .summary-cards { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 640px) {
+            .summary-cards { grid-template-columns: 1fr; }
+        }
+
+        .summary-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .balance-card .card-icon { background-color: rgba(59, 130, 246, 0.2); }
+        .income-card .card-icon { background-color: rgba(34, 197, 94, 0.2); }
+        .expense-card .card-icon { background-color: rgba(239, 68, 68, 0.2); }
+        .transactions-card .card-icon { background-color: rgba(100, 116, 139, 0.2); }
+
+        .summary-card h3 {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .summary-card .amount {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .balance-card .amount { color: white; }
+        .income-card .amount { color: var(--income); }
+        .expense-card .amount { color: var(--expense); }
+        .transactions-card .amount { color: white; }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Chart & Preferences */
+        .chart-container, .preferences-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .chart-container h2, .preferences-card h2 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        /* Preferences */
+        .preferences-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .preferences-section h3 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background-color: var(--border);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active {
+            background-color: var(--primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            left: 27px;
+        }
+
+        /* Transactions */
+        .transactions-section {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .transactions-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .transaction-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background-color: #1e293b;
+            color: var(--text);
+        }
+
+        .filter-select {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background-color: #1e293b;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 0.875rem;
+        }
+
+        .amount-income { color: var(--income); font-weight: 600; }
+        .amount-expense { color: var(--expense); font-weight: 600; }
+
+        .category-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: #1e293b;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.25rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Settings */
+        .settings-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            max-width: 600px;
+        }
+
+        .settings-card h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="page" id="loginPage">
+        <div class="login-container">
+            <div class="login-card">
+                <!-- Login Form -->
+                <div id="loginFormSection">
+                    <h2>Welcome Back</h2>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="loginUsername" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter password">
+                    </div>
+                    <button class="btn btn-primary" style="width:100%" id="loginBtn">Login</button>
+                    <p style="text-align:center; margin-top:1rem; color:var(--text-muted);">
+                        Don't have an account? <span id="switchToRegister" style="color:var(--primary); cursor:pointer;">Register here</span>
+                    </p>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerFormSection" style="display:none;">
+                    <h2>Create Account</h2>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="registerUsername" placeholder="Choose username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="registerPassword" placeholder="Choose password">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="registerConfirmPassword" placeholder="Confirm password">
+                    </div>
+                    <button class="btn btn-primary" style="width:100%" id="registerBtn">Register</button>
+                    <p style="text-align:center; margin-top:1rem; color:var(--text-muted);">
+                        Already have an account? <span id="switchToLogin" style="color:var(--primary); cursor:pointer;">Login here</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="mainApp" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                🏠 <span>FinTrack Pro</span>
+            </div>
+            <div class="sidebar-subtitle">Enterprise Finance</div>
+            <div class="sidebar-link active" data-page="dashboard">
+                <span>📊</span> <span>Dashboard</span>
+            </div>
+            <div class="sidebar-link" data-page="settings">
+                <span>⚙️</span> <span>Settings</span>
+            </div>
+            <div class="add-transaction-sidebar">
+                <button class="btn btn-primary" id="addTransactionBtn" style="width:100%;">
+                    ➕ Add Transaction
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div></div>
+                <div class="top-nav-right">
+                    <span class="username-tag" id="usernameDisplay">User</span>
+                    <button class="logout-btn" id="logoutBtn">
+                        🔒 Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Dashboard Page -->
+                <div class="page active" id="dashboardPage">
+                    <div class="dashboard-header">
+                        <h1>Financial Overview</h1>
+                        <p>Real-time tracking application</p>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="summary-cards">
+                        <div class="summary-card balance-card">
+                            <div class="card-icon">🏦</div>
+                            <h3>Current Balance</h3>
+                            <div class="amount" id="balanceAmount">$0.00</div>
+                        </div>
+                        <div class="summary-card income-card">
+                            <div class="card-icon">📈</div>
+                            <h3>Total Income</h3>
+                            <div class="amount" id="incomeAmount">$0.00</div>
+                        </div>
+                        <div class="summary-card expense-card">
+                            <div class="card-icon">📉</div>
+                            <h3>Total Expense</h3>
+                            <div class="amount" id="expenseAmount">$0.00</div>
+                        </div>
+                        <div class="summary-card transactions-card">
+                            <div class="card-icon">🔢</div>
+                            <h3>Total Transactions</h3>
+                            <div class="amount" id="transactionCount">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Grid -->
+                    <div class="dashboard-grid">
+                        <div class="chart-container">
+                            <h2>Cash Flow Analysis</h2>
+                            <canvas id="cashFlowChart"></canvas>
+                        </div>
+
+                        <div class="preferences-card">
+                            <h2>Preferences</h2>
+                            <div class="preferences-section">
+                                <div class="toggle-container">
+                                    <div>
+                                        <h3>Dark Mode</h3>
+                                    </div>
+                                    <div class="toggle-switch active" id="darkModeToggle"></div>
+                                </div>
+                            </div>
+                            <div class="preferences-section">
+                                <button class="btn btn-danger" id="resetDataBtn" style="width:100%;">
+                                    🗑️ Reset All Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions -->
+                    <div class="transactions-section">
+                        <h2>All Transactions</h2>
+                        <div class="transaction-controls">
+                            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search transactions...">
+                            <select class="filter-select" id="categoryFilter">
+                                <option value="all">All Types</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <table id="transactionTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div class="page" id="settingsPage">
+                    <div class="settings-card">
+                        <h2>Profile & Preferences</h2>
+                        
+                        <div class="settings-section">
+                            <div class="form-group">
+                                <label>Display Name</label>
+                                <input type="text" id="displayNameInput" placeholder="Your name">
+                            </div>
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select id="currencySelect">
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="GBP">GBP (£)</option>
+                                    <option value="INR">INR (₹)</option>
+                                    <option value="JPY">JPY (¥)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <div class="toggle-container">
+                                <div>
+                                    <h4>Dark Mode</h4>
+                                    <p style="font-size:0.9rem; color:var(--text-muted);">Switch between light and dark theme</p>
+                                </div>
+                                <div class="toggle-switch active" id="darkModeToggleSettings"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h4 style="margin-bottom:0.5rem; color:var(--expense);">Reset All Data</h4>
+                            <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">This will delete all transactions and settings permanently</p>
+                            <button class="btn btn-danger" id="resetDataBtnSettings">Reset Everything</button>
+                        </div>
+
+                        <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal-overlay" id="transactionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add New Transaction</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select id="transactionType">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" id="transactionDesc" placeholder="e.g., Monthly Salary">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" id="transactionAmount" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="transactionDate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="transactionCategory">
+                    <option value="Food & Dining">Food & Dining</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Recharge & Bills">Recharge & Bills</option>
+                    <option value="Petrol & Auto">Petrol & Auto</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Salary">Salary</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" style="width:100%" id="saveTransactionBtn">Save Transaction</button>
+        </div>
+    </div>
+
+    <script>
+        // Currency symbols
+        const currencies = {
+            USD: '$',
+            EUR: '€',
+            GBP: '£',
+            INR: '₹',
+            JPY: '¥'
+        };
+
+        // State
+        let transactions = [];
+        let currentFilter = 'all';
+        let cashFlowChart = null;
+        let currentUser = '';
+
+        // Show main app
+        function showMainApp(show) {
+            const loginPage = document.getElementById('loginPage');
+            const mainApp = document.getElementById('mainApp');
+            if (show) {
+                loginPage.style.display = 'none';
+                mainApp.style.display = 'flex';
+            } else {
+                loginPage.style.display = 'block';
+                mainApp.style.display = 'none';
+            }
+        }
+
+        // Load from storage
+        function loadFromStorage() {
+            const savedTransactions = localStorage.getItem('fintrack_transactions');
+            const savedSettings = localStorage.getItem('fintrack_settings');
+            const session = localStorage.getItem('fintrack_session');
+            const users = localStorage.getItem('fintrack_users');
+
+            if (savedTransactions) transactions = JSON.parse(savedTransactions);
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                document.getElementById('displayNameInput').value = settings.name || '';
+                document.getElementById('currencySelect').value = settings.currency || 'USD';
+            }
+            if (!users) localStorage.setItem('fintrack_users', JSON.stringify([]));
+
+            // Check session
+            if (!session) {
+                showMainApp(false);
+            } else {
+                currentUser = session;
+                document.getElementById('usernameDisplay').textContent = session;
+                showMainApp(true);
+            }
+
+            // Set today's date as default
+            document.getElementById('transactionDate').value = new Date().toISOString().split('T')[0];
+        }
+
+        // Save to storage
+        function saveTransactions() {
+            localStorage.setItem('fintrack_transactions', JSON.stringify(transactions));
+        }
+
+        function saveSettings() {
+            const settings = {
+                name: document.getElementById('displayNameInput').value,
+                currency: document.getElementById('currencySelect').value,
+                darkMode: true
+            };
+            localStorage.setItem('fintrack_settings', JSON.stringify(settings));
+        }
+
+        // Format amount
+        function formatAmount(amount) {
+            const currency = document.getElementById('currencySelect').value;
+            const symbol = currencies[currency];
+            return `${symbol}${parseFloat(amount).toFixed(2)}`;
+        }
+
+        // Master refresh function
+        function refreshUI() {
+            updateSummaryCards();
+            renderTransactionTable();
+            renderChart();
+        }
+
+        // Update summary cards
+        function updateSummaryCards() {
+            let income = 0;
+            let expense = 0;
+
+            transactions.forEach(t => {
+                if (t.type === 'income') income += parseFloat(t.amount);
+                else expense += parseFloat(t.amount);
+            });
+
+            const balance = income - expense;
+            document.getElementById('balanceAmount').textContent = formatAmount(balance);
+            document.getElementById('incomeAmount').textContent = formatAmount(income);
+            document.getElementById('expenseAmount').textContent = formatAmount(expense);
+            document.getElementById('transactionCount').textContent = transactions.length;
+        }
+
+        // Render transaction table
+        function renderTransactionTable() {
+            const tbody = document.getElementById('transactionTableBody');
+            tbody.innerHTML = '';
+
+            let filtered = transactions;
+            if (currentFilter === 'income') filtered = transactions.filter(t => t.type === 'income');
+            else if (currentFilter === 'expense') filtered = transactions.filter(t => t.type === 'expense');
+
+            // Search filter
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm) {
+                filtered = filtered.filter(t => 
+                    t.description.toLowerCase().includes(searchTerm) || 
+                    t.category.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Sort by date (newest first)
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            filtered.forEach(t => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${t.date}</td>
+                    <td>${t.description}</td>
+                    <td><span class="category-badge">${t.category}</span></td>
+                    <td class="${t.type === 'income' ? 'amount-income' : 'amount-expense'}">
+                        ${t.type === 'income' ? '+' : '-'}${formatAmount(t.amount)}
+                    </td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" data-id="${t.id}" title="Edit">✏️</button>
+                        <button class="action-btn delete-btn" data-id="${t.id}" title="Delete">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Render chart
+        function renderChart() {
+            const ctx = document.getElementById('cashFlowChart').getContext('2d');
+
+            // Get last 7 days
+            const last7Days = [];
+            const incomeByDay = {};
+            const expenseByDay = {};
+
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                last7Days.push(dateStr);
+                incomeByDay[dateStr] = 0;
+                expenseByDay[dateStr] = 0;
+            }
+
+            transactions.forEach(t => {
+                if (last7Days.includes(t.date)) {
+                    if (t.type === 'income') incomeByDay[t.date] += parseFloat(t.amount);
+                    else expenseByDay[t.date] += parseFloat(t.amount);
+                }
+            });
+
+            if (cashFlowChart) cashFlowChart.destroy();
+
+            cashFlowChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: last7Days.map(d => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })),
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: last7Days.map(d => incomeByDay[d]),
+                            backgroundColor: '#22c55e',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Expense',
+                            data: last7Days.map(d => expenseByDay[d]),
+                            backgroundColor: '#ef4444',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(51,65,85,0.5)' },
+                            ticks: { color: '#94a3b8' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Show page
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+
+            document.getElementById(`${page}Page`).classList.add('active');
+            const activeLink = document.querySelector(`.sidebar-link[data-page="${page}"]`);
+            if (activeLink) activeLink.classList.add('active');
+        }
+
+        // Event listeners
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', () => showPage(link.dataset.page));
+        });
+
+        // Dark mode toggle (dummy since we're always dark)
+        document.getElementById('darkModeToggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+
+        // Modal
+        document.getElementById('addTransactionBtn').addEventListener('click', () => {
+            document.getElementById('transactionModal').classList.add('active');
+        });
+
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            document.getElementById('transactionModal').classList.remove('active');
+        });
+
+        document.getElementById('transactionModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('active');
+        });
+
+        // Save transaction
+        document.getElementById('saveTransactionBtn').addEventListener('click', () => {
+            const type = document.getElementById('transactionType').value;
+            const desc = document.getElementById('transactionDesc').value.trim();
+            const amount = document.getElementById('transactionAmount').value;
+            const date = document.getElementById('transactionDate').value;
+            const category = document.getElementById('transactionCategory').value;
+
+            if (!desc || !amount || !date) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            const transaction = {
+                id: Date.now(),
+                type,
+                description: desc,
+                amount: parseFloat(amount),
+                date,
+                category
+            };
+
+            transactions.push(transaction);
+            saveTransactions();
+            refreshUI();
+
+            // Reset and close
+            document.getElementById('transactionDesc').value = '';
+            document.getElementById('transactionAmount').value = '';
+            document.getElementById('transactionDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('transactionModal').classList.remove('active');
+        });
+
+        // Filter buttons
+        document.getElementById('categoryFilter').addEventListener('change', () => {
+            currentFilter = document.getElementById('categoryFilter').value;
+            renderTransactionTable();
+        });
+
+        // Search input
+        document.getElementById('searchInput').addEventListener('input', renderTransactionTable);
+
+        // Delete transaction
+        document.getElementById('transactionTableBody').addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                const id = parseInt(e.target.dataset.id);
+                transactions = transactions.filter(t => t.id !== id);
+                saveTransactions();
+                refreshUI();
+            }
+            if (e.target.classList.contains('edit-btn')) {
+                const id = parseInt(e.target.dataset.id);
+                const transaction = transactions.find(t => t.id === id);
+                if (transaction) {
+                    document.getElementById('transactionType').value = transaction.type;
+                    document.getElementById('transactionDesc').value = transaction.description;
+                    document.getElementById('transactionAmount').value = transaction.amount;
+                    document.getElementById('transactionDate').value = transaction.date;
+                    document.getElementById('transactionCategory').value = transaction.category;
+                    document.getElementById('transactionModal').classList.add('active');
+                    // Remove old transaction
+                    transactions = transactions.filter(t => t.id !== id);
+                }
+            }
+        });
+
+        // Save settings
+        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+            saveSettings();
+            refreshUI();
+            alert('Settings saved successfully!');
+        });
+
+        // Reset data
+        function resetData() {
+            if (confirm('Are you absolutely sure you want to reset everything? This cannot be undone!')) {
+                transactions = [];
+                saveTransactions();
+                refreshUI();
+                alert('All data has been reset!');
+            }
+        }
+        document.getElementById('resetDataBtn').addEventListener('click', resetData);
+        document.getElementById('resetDataBtnSettings').addEventListener('click', resetData);
+
+        // Switch between login and register
+        document.getElementById('switchToRegister').addEventListener('click', () => {
+            document.getElementById('loginFormSection').style.display = 'none';
+            document.getElementById('registerFormSection').style.display = 'block';
+            // Clear inputs
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+        });
+
+        document.getElementById('switchToLogin').addEventListener('click', () => {
+            document.getElementById('registerFormSection').style.display = 'none';
+            document.getElementById('loginFormSection').style.display = 'block';
+            // Clear inputs
+            document.getElementById('registerUsername').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('registerConfirmPassword').value = '';
+        });
+
+        // Login
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                alert('Please enter both username and password!');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('fintrack_users') || '[]');
+            const existingUser = users.find(u => u.username === username);
+
+            if (!existingUser) {
+                alert('Username does not exist! Please register first.');
+                return;
+            }
+
+            if (existingUser.password !== password) {
+                alert('Incorrect password! Please try again.');
+                return;
+            }
+
+            localStorage.setItem('fintrack_session', username);
+            currentUser = username;
+            document.getElementById('usernameDisplay').textContent = username;
+            showMainApp(true);
+            refreshUI();
+        });
+
+        // Register
+        document.getElementById('registerBtn').addEventListener('click', () => {
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            // Validate inputs
+            if (!username || !password || !confirmPassword) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            if (username.length < 3) {
+                alert('Username must be at least 3 characters long!');
+                return;
+            }
+
+            if (password.length < 4) {
+                alert('Password must be at least 4 characters long!');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('fintrack_users') || '[]');
+            const existingUser = users.find(u => u.username === username);
+
+            if (existingUser) {
+                alert('Username already exists! Please choose a different username.');
+                return;
+            }
+
+            // Register user
+            users.push({ username, password });
+            localStorage.setItem('fintrack_users', JSON.stringify(users));
+
+            alert('Registration successful! Please login.');
+
+            // Switch to login
+            document.getElementById('registerFormSection').style.display = 'none';
+            document.getElementById('loginFormSection').style.display = 'block';
+            document.getElementById('loginUsername').value = username;
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('fintrack_session');
+            currentUser = '';
+            showMainApp(false);
+        });
+
+        // Initialize
+        loadFromStorage();
+        refreshUI();
+    </script>
+</body>
+</html>
