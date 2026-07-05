@@ -43,5 +43,33 @@ function greet(name = 'Sir'){
     }
     
 }
-greet('apurv')
-greet()
+// greet('apurv')
+// greet()
+
+
+let arr = [1, 2 ,3 ,4 ,5 ]
+let arr2 =[99, 22, 1, 35 ,45 ,8,  0 , 1, 4]
+// console.log(arr[arr.length-1]);
+
+// arr.push(6)
+// console.log(arr);
+// arr.pop()
+// console.log(arr);
+
+// arr.unshift()
+// arr.unshift(70)
+// console.log(arr)
+arr.shift(45)
+// console.log(arr)
+
+arr.splice(2, 0, 77)
+// console.log(arr);
+arr2.sort((a,b)=>a -b)
+// console.log(arr2);
+
+arr3 = []
+
+for(i = 0; i < 10; i++){
+    arr3.push(i+1)
+}
+console.log(arr3);
