@@ -7,7 +7,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     <style>
+        /* Light Mode Variables */
         :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --income: #22c55e;
+            --expense: #ef4444;
+            --bg: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text: #000000;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --shadow: rgba(0,0,0,0.05);
+        }
+
+        /* Dark Mode Variables */
+        body.dark {
             --primary: #3b82f6;
             --primary-dark: #2563eb;
             --income: #22c55e;
@@ -54,7 +70,7 @@
         .sidebar-logo {
             font-size: 1.25rem;
             font-weight: 700;
-            color: white;
+            color: var(--text);
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -81,8 +97,13 @@
             transition: all 0.2s;
         }
 
-        .sidebar-link:hover, .sidebar-link.active {
-            background-color: rgba(59, 130, 246, 0.1);
+        .sidebar-link:hover {
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        .sidebar-link.active {
+            background-color: var(--primary);
             color: white;
         }
 
@@ -191,7 +212,7 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
-            background-color: #1e293b;
+            background-color: var(--card-bg);
             color: var(--text);
         }
 
@@ -396,7 +417,7 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 0.875rem;
-            background-color: #1e293b;
+            background-color: var(--card-bg);
             color: var(--text);
         }
 
@@ -405,9 +426,17 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 0.875rem;
-            background-color: #1e293b;
+            background-color: var(--card-bg);
             color: var(--text);
             cursor: pointer;
+        }
+
+        .category-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: var(--bg);
         }
 
         table {
@@ -824,6 +853,17 @@
                 const settings = JSON.parse(savedSettings);
                 document.getElementById('displayNameInput').value = settings.name || '';
                 document.getElementById('currencySelect').value = settings.currency || 'USD';
+                
+                // Apply dark mode if saved
+                if (settings.darkMode) {
+                    document.body.classList.add('dark');
+                    document.getElementById('darkModeToggle').classList.add('active');
+                    document.getElementById('darkModeToggleSettings').classList.add('active');
+                } else {
+                    document.body.classList.remove('dark');
+                    document.getElementById('darkModeToggle').classList.remove('active');
+                    document.getElementById('darkModeToggleSettings').classList.remove('active');
+                }
             }
             if (!users) localStorage.setItem('fintrack_users', JSON.stringify([]));
 
@@ -849,7 +889,7 @@
             const settings = {
                 name: document.getElementById('displayNameInput').value,
                 currency: document.getElementById('currencySelect').value,
-                darkMode: true
+                darkMode: document.body.classList.contains('dark')
             };
             localStorage.setItem('fintrack_settings', JSON.stringify(settings));
         }
@@ -927,6 +967,7 @@
         // Render chart
         function renderChart() {
             const ctx = document.getElementById('cashFlowChart').getContext('2d');
+            const isDark = document.body.classList.contains('dark');
 
             // Get last 7 days
             const last7Days = [];
@@ -973,18 +1014,23 @@
                 options: {
                     responsive: true,
                     plugins: {
-                        legend: { position: 'top' },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: isDark ? '#f1f5f9' : '#1e293b'
+                            }
+                        },
                         title: { display: false }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: 'rgba(51,65,85,0.5)' },
-                            ticks: { color: '#94a3b8' }
+                            grid: { color: isDark ? 'rgba(51,65,85,0.5)' : 'rgba(0,0,0,0.05)' },
+                            ticks: { color: isDark ? '#94a3b8' : '#64748b' }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#94a3b8' }
+                            ticks: { color: isDark ? '#94a3b8' : '#64748b' }
                         }
                     }
                 }
@@ -1006,9 +1052,22 @@
             link.addEventListener('click', () => showPage(link.dataset.page));
         });
 
-        // Dark mode toggle (dummy since we're always dark)
+        // Dark mode toggle (Dashboard)
         document.getElementById('darkModeToggle').addEventListener('click', function() {
             this.classList.toggle('active');
+            document.body.classList.toggle('dark');
+            document.getElementById('darkModeToggleSettings').classList.toggle('active');
+            saveSettings();
+            refreshUI();
+        });
+
+        // Dark mode toggle (Settings)
+        document.getElementById('darkModeToggleSettings').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.body.classList.toggle('dark');
+            document.getElementById('darkModeToggle').classList.toggle('active');
+            saveSettings();
+            refreshUI();
         });
 
         // Modal
