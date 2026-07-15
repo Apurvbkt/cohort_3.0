@@ -1,0 +1,485 @@
+/* Light Mode Variables */
+:root {
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --success-color: #22c55e;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --shadow-hover: rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Mode Variables */
+body.dark {
+    --primary-color: #818cf8;
+    --primary-hover: #6366f1;
+    --success-color: #4ade80;
+    --danger-color: #f87171;
+    --warning-color: #fbbf24;
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-hover: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+/* Weather-based backgrounds (override time-based in light mode) */
+body.weather-sunny:not(.dark) {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+body.weather-cloudy:not(.dark) {
+    background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+}
+body.weather-rainy:not(.dark) {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+body.weather-snowy:not(.dark) {
+    background: linear-gradient(135deg, #e0e5ec 0%, #f5f7fa 100%);
+}
+body.weather-stormy:not(.dark) {
+    background: linear-gradient(135deg, #373b44 0%, #4286f4 100%);
+}
+body.weather-foggy:not(.dark) {
+    background: linear-gradient(135deg, #c1dfc4 0%, #deecdd 100%);
+}
+
+/* Weather-based backgrounds (Dark Mode) */
+body.weather-sunny.dark {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+body.weather-cloudy.dark {
+    background: linear-gradient(135deg, #1e3a5f 0%, #162447 100%);
+}
+body.weather-rainy.dark {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
+}
+body.weather-snowy.dark {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+body.weather-stormy.dark {
+    background: linear-gradient(135deg, #000000 0%, #0f0f0f 100%);
+}
+body.weather-foggy.dark {
+    background: linear-gradient(135deg, #1f1f1f 0%, #2f2f2f 100%);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.header-left h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.date-time {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Weather Widget */
+.weather-widget {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.weather-icon {
+    font-size: 2.5rem;
+}
+
+.weather-details {
+    text-align: right;
+}
+
+.weather-temp {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.weather-location {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.refresh-weather {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.refresh-weather:hover {
+    background-color: var(--border-color);
+    transform: rotate(180deg);
+}
+
+.theme-toggle {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+/* Dashboard Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.feature-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px var(--shadow-hover);
+    border-color: var(--primary-color);
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Feature Views */
+.view-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.back-btn {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.back-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.view-header h2 {
+    font-size: 1.75rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Todo List */
+.todo-input-container, .goal-input-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.todo-input-container input, .goal-input-container input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+.todo-input-container input:focus, .goal-input-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.todo-list, .goals-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.todo-item, .goal-item {
+    background-color: var(--card-bg);
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.todo-text, .goal-text {
+    flex: 1;
+}
+
+.todo-item.completed .todo-text {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.todo-item.important {
+    border-left: 4px solid var(--warning-color);
+}
+
+.goal-item.completed {
+    background-color: rgba(34, 197, 94, 0.1);
+    border-left: 4px solid var(--success-color);
+}
+
+.todo-actions, .goal-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+    background-color: var(--border-color);
+}
+
+/* Daily Planner */
+.planner-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.planner-slot {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+    align-items: center;
+    background-color: var(--card-bg);
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.planner-slot.current-hour {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.planner-time {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.planner-input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.planner-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Quote Container */
+.quote-container {
+    text-align: center;
+    padding: 3rem;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.quote-text {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.quote-author {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+/* Pomodoro Timer */
+.pomodoro-container {
+    text-align: center;
+    padding: 3rem;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.timer-label {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.timer-display {
+    font-size: 6rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Goals Progress */
+.goals-progress {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    .header-right {
+        flex-direction: column;
+    }
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    .timer-display {
+        font-size: 4rem;
+    }
+    .planner-slot {
+        grid-template-columns: 80px 1fr;
+    }
+    .todo-input-container, .goal-input-container {
+        flex-direction: column;
+    }
+    .todo-input-container button, .goal-input-container button {
+        width: 100%;
+    }
+}

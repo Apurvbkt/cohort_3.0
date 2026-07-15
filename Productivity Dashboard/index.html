@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productivity Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>🚀 Productivity Dashboard</h1>
+                <div class="date-time" id="dateTime"></div>
+            </div>
+            <div class="header-right">
+                <div class="weather-widget" id="weatherWidget">
+                    <div class="weather-icon" id="weatherIcon">🌤️</div>
+                    <div class="weather-details">
+                        <div class="weather-temp" id="weatherTemp">--°C</div>
+                        <div class="weather-location" id="weatherLocation">Fetching...</div>
+                    </div>
+                    <button class="icon-btn refresh-weather" id="refreshWeatherBtn" title="Refresh location">🔄</button>
+                </div>
+                <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+            </div>
+        </header>
+
+        <!-- Dashboard View -->
+        <main class="dashboard" id="dashboardView">
+            <!-- Feature Cards -->
+            <div class="features-grid">
+                <div class="feature-card" data-feature="todo">
+                    <div class="card-icon">📝</div>
+                    <h3>Todo List</h3>
+                    <p>Manage your tasks</p>
+                </div>
+                <div class="feature-card" data-feature="planner">
+                    <div class="card-icon">📅</div>
+                    <h3>Daily Planner</h3>
+                    <p>Plan your day hourly</p>
+                </div>
+                <div class="feature-card" data-feature="quote">
+                    <div class="card-icon">💡</div>
+                    <h3>Motivation Quote</h3>
+                    <p>Stay inspired</p>
+                </div>
+                <div class="feature-card" data-feature="pomodoro">
+                    <div class="card-icon">⏱️</div>
+                    <h3>Pomodoro Timer</h3>
+                    <p>Focus better</p>
+                </div>
+                <div class="feature-card" data-feature="goals">
+                    <div class="card-icon">🎯</div>
+                    <h3>Daily Goals</h3>
+                    <p>Track your progress</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Todo List View -->
+        <section class="feature-view" id="todoView" style="display:none;">
+            <div class="view-header">
+                <button class="back-btn" id="todoBackBtn">← Back</button>
+                <h2>Todo List</h2>
+            </div>
+            <div class="todo-input-container">
+                <input type="text" id="todoInput" placeholder="Add a new task..." maxlength="100">
+                <button id="addTodoBtn" class="btn-primary">Add Task</button>
+            </div>
+            <ul id="todoList" class="todo-list"></ul>
+        </section>
+
+        <!-- Daily Planner View -->
+        <section class="feature-view" id="plannerView" style="display:none;">
+            <div class="view-header">
+                <button class="back-btn" id="plannerBackBtn">← Back</button>
+                <h2>Daily Planner</h2>
+            </div>
+            <div id="plannerSlots" class="planner-slots"></div>
+        </section>
+
+        <!-- Motivation Quote View -->
+        <section class="feature-view" id="quoteView" style="display:none;">
+            <div class="view-header">
+                <button class="back-btn" id="quoteBackBtn">← Back</button>
+                <h2>Motivation Quote</h2>
+            </div>
+            <div class="quote-container">
+                <div id="quoteText" class="quote-text">"The only way to do great work is to love what you do."</div>
+                <div id="quoteAuthor" class="quote-author">- Steve Jobs</div>
+                <button id="newQuoteBtn" class="btn-primary">New Quote</button>
+            </div>
+        </section>
+
+        <!-- Pomodoro Timer View -->
+        <section class="feature-view" id="pomodoroView" style="display:none;">
+            <div class="view-header">
+                <button class="back-btn" id="pomodoroBackBtn">← Back</button>
+                <h2>Pomodoro Timer</h2>
+            </div>
+            <div class="pomodoro-container">
+                <div id="timerLabel" class="timer-label">Work Session</div>
+                <div id="timerDisplay" class="timer-display">25:00</div>
+                <div class="timer-controls">
+                    <button id="startTimerBtn" class="btn-primary">Start</button>
+                    <button id="pauseTimerBtn" class="btn-secondary" style="display:none;">Pause</button>
+                    <button id="resetTimerBtn" class="btn-secondary">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Goals View -->
+        <section class="feature-view" id="goalsView" style="display:none;">
+            <div class="view-header">
+                <button class="back-btn" id="goalsBackBtn">← Back</button>
+                <h2>Daily Goals</h2>
+                <div id="goalsProgress" class="goals-progress">0 of 0 completed</div>
+            </div>
+            <div class="goal-input-container">
+                <input type="text" id="goalInput" placeholder="Add a daily goal..." maxlength="100">
+                <button id="addGoalBtn" class="btn-primary">Add Goal</button>
+            </div>
+            <ul id="goalsList" class="goals-list"></ul>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
