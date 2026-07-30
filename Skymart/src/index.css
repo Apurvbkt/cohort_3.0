@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans antialiased;
+    background-color: #0A0A0A;
+    color: #FFFFFF;
+  }
+  body.light {
+    background-color: #FAFAFA;
+    color: #18181B;
+  }
+  ::selection {
+    background-color: #C2FF00;
+    color: #0A0A0A;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2A2A30;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3A3A42;
+  }
+  body.light ::-webkit-scrollbar-thumb {
+    background: #D4D4D8;
+  }
+  body.light ::-webkit-scrollbar-thumb:hover {
+    background: #A1A1AA;
+  }
+}
+
+@layer components {
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 bg-accent text-surface font-semibold px-5 py-2.5 rounded-xl
+           transition-all duration-200 hover:bg-accent-hover active:scale-[0.98] shadow-glow disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 border border-surface-border text-ink-muted font-medium px-5 py-2.5 rounded-xl
+           transition-all duration-200 hover:border-accent hover:text-accent active:scale-[0.98];
+  }
+  .btn-icon {
+    @apply inline-flex items-center justify-center w-10 h-10 rounded-xl border border-surface-border text-ink-muted
+           transition-all duration-200 hover:border-accent hover:text-accent hover:bg-accent-soft;
+  }
+  .card {
+    @apply bg-surface-card border border-surface-border rounded-3xl transition-all duration-300;
+  }
+  body.light .card {
+    @apply bg-light-card border-light-border;
+  }
+  .glass {
+    @apply backdrop-blur-xl bg-surface-card/80 border border-surface-border/70;
+  }
+  .input-field {
+    @apply w-full bg-surface-soft border border-surface-border rounded-2xl px-4 py-3.5 text-ink placeholder-ink-soft
+           focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all duration-200;
+  }
+  body.light .input-field {
+    @apply bg-white border-light-border text-light-text placeholder-light-muted;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium;
+  }
+  .badge-category {
+    @apply chip bg-surface-soft text-ink-muted;
+  }
+  body.light .badge-category {
+    @apply bg-gray-100 text-light-muted;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
